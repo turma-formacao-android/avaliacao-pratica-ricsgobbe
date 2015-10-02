@@ -4,25 +4,11 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/editTxtEmail1"
+        android:id="@+id/editTxtEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email1"/>
-    <EditText
-        android:id="@+id/editTxtEmail2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Email2"/>
-    <EditText
-        android:id="@+id/editTxtEmail3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Email3"/>
-    <EditText
-        android:id="@+id/editTxtEmail4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Email4"/>
+        android:hint="Email"/>
+
 
 
 

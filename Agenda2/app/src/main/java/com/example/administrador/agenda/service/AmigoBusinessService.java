@@ -21,6 +21,10 @@ public class AmigoBusinessService {
         AmigoRepository.save(amigo);
     }
 
+    public static Long getIdAmigo(String nome){
+        return AmigoRepository.getIdAmigo(nome);
+    }
+
     public static void delete(Amigo amigo){
         AmigoRepository.delete(amigo.get_id());
     }

@@ -57,4 +57,19 @@ public class AmigoRepository {
     }
 
 
+    public static Long getIdAmigo(String nome) {
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance();
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+        String where = AmigoContract.NOME + " = ? ";
+        String[] params = {String.valueOf(nome)};
+
+        Cursor cursor = db.query(AmigoContract.TABLE, AmigoContract.COLUNMS, where, params, null, null, null);
+        Amigo amigo = AmigoContract.getAmigo(cursor);
+
+        db.close();
+        databaseHelper.close();
+
+        return amigo.get_id();
+    }
 }

@@ -3,16 +3,26 @@ package com.example.administrador.agenda.model.entidade;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Created by Administrador on 01/10/2015.
  */
 public class Amigo implements Parcelable {
     private Long _id;
     private String nome;
+    @JsonProperty("tipoDeLogradouro")
+    private String tipoDeLogradouro;
+    @JsonProperty("cep")
     private String cep;
+    @JsonProperty("logradouro")
     private String rua;
+    @JsonProperty("bairro")
     private String bairro;
+    @JsonProperty("estado")
     private String estado;
+    @JsonProperty("cidade")
     private String cidade;
 
     public Long get_id() {

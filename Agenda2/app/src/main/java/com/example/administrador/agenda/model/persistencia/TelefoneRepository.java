@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.administrador.agenda.model.entidade.Amigo;
+import com.example.administrador.agenda.model.entidade.RedeSocial;
+import com.example.administrador.agenda.model.entidade.Telefone;
 
 import java.util.List;
 
@@ -16,44 +18,60 @@ public class TelefoneRepository {
         super();
     }
 
-   /* public static void save(String tel){
+    public static void save(Telefone telefone){
 
         DatabaseHelper databaseHelper =DatabaseHelper.getInstance();
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
-        ContentValues values = TelefoneContract.contentValues(null, tel);
-        if(estoque.get_id() == null) {
-            db.insert(AmigoContract.TABLE, null, values);
+        ContentValues values = TelefoneContract.contentValues(telefone);
+        if(telefone.get_id() == null) {
+            db.insert(TelefoneContract.TABLE, null, values);
         } else {
-            String where = AmigoContract.ID + " = ? ";
-            String[] params = {estoque.get_id().toString()};
-            db.update(AmigoContract.TABLE, values, where, params);
+            String where = TelefoneContract.ID + " = ? ";
+            String[] params = {telefone.get_id().toString()};
+            db.update(TelefoneContract.TABLE, values, where, params);
         }
         db.close();
         databaseHelper.close();
 
-    }*/
+    }
 
-    public static List<Amigo> getAll(){
+    public static List<Telefone> getAll(){
         DatabaseHelper databaseHelper =DatabaseHelper.getInstance();
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
 
-        Cursor cursor = db.query(AmigoContract.TABLE, AmigoContract.COLUNMS, null, null, null, null, AmigoContract.ID);
-        List<Amigo> amigos = AmigoContract.getEstoques(cursor);
+        Cursor cursor = db.query(TelefoneContract.TABLE, TelefoneContract.COLUNMS, null, null, null, null, TelefoneContract.ID);
+        List<Telefone> telefone = TelefoneContract.getAllTel(cursor);
         db.close();
         databaseHelper.close();
-        return amigos;
+        return telefone;
     }
 
     public static void delete(long id){
         DatabaseHelper databaseHelper =DatabaseHelper.getInstance();
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
-        String where = AmigoContract.ID + " = ? ";
+        String where = TelefoneContract.ID + " = ? ";
         String[] params = {String.valueOf(id)};
-        db.delete(AmigoContract.TABLE, where, params);
+        db.delete(TelefoneContract.TABLE, where, params);
 
         db.close();
         databaseHelper.close();
+    }
+
+    public static void getTelNull(Long idAmigo) {
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance();
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+        String where = TelefoneContract.ID_AMIGO + " IS NULL";
+        //String[] params = null;
+
+        Cursor cursor = db.query(TelefoneContract.TABLE, TelefoneContract.COLUNMS, where, null, null, null, null);
+        Telefone telefone = new Telefone();
+        while (cursor.moveToNext()) {
+            telefone = TelefoneContract.getTelefone(cursor);
+            telefone.setIdAmigo(idAmigo);
+            save(telefone);
+        }
     }
 }

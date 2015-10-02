@@ -3,6 +3,8 @@ package com.example.administrador.agenda.model.persistencia;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import com.example.administrador.agenda.model.entidade.RedeSocial;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,28 +28,32 @@ public class RedeContract {
         create.append(" CREATE TABLE "+ TABLE);
         create.append(" ( ");
         create.append(ID + " INTEGER PRIMARY KEY, ");
-        create.append(ID_AMIGO + " LONG NOT NULL, ");
-        create.append(REDE + " TEXT NOT NULL ");
+        create.append(ID_AMIGO + " LONG, ");
+        create.append(REDE + " TEXT  ");
         create.append(" ); ");
 
         return create.toString();
     }
 
 
-    public static ContentValues contentValues(Long id, String rede){
+    public static ContentValues contentValues(RedeSocial rede){
         ContentValues values = new ContentValues();
-        values.put(ID_AMIGO, id);
-        values.put(REDE, rede);
+        values.put(ID, rede.get_id());
+        values.put(ID_AMIGO, rede.getIdAmigo());
+        values.put(REDE, rede.getRede());
         return values;
     }
 
-    public static String getRede(Cursor cursor){
-        String rede = cursor.getString(cursor.getColumnIndex(RedeContract.REDE));
+    public static RedeSocial getRede(Cursor cursor){
+        RedeSocial rede = new RedeSocial();
+        rede.set_id(cursor.getLong(cursor.getColumnIndex(RedeContract.ID)));
+        rede.setIdAmigo(cursor.getLong(cursor.getColumnIndex(RedeContract.ID_AMIGO)));
+        rede.setRede(cursor.getString(cursor.getColumnIndex(RedeContract.REDE)));
         return rede;
     }
 
-    public static List<String> getAllRede(Cursor cursor){
-        ArrayList<String> redes = new ArrayList<>();
+    public static List<RedeSocial> getAllRede(Cursor cursor){
+        ArrayList<RedeSocial> redes = new ArrayList<>();
         while(cursor.moveToNext()){
             redes.add(getRede(cursor));
         }

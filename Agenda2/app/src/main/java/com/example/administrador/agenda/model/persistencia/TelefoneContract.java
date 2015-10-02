@@ -4,6 +4,8 @@ package com.example.administrador.agenda.model.persistencia;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import com.example.administrador.agenda.model.entidade.Telefone;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,26 +38,28 @@ public class TelefoneContract {
     }
 
 
-    public static ContentValues contentValues(Long id, String telefone){
+    public static ContentValues contentValues(Telefone telefone){
         ContentValues values = new ContentValues();
-        values.put(ID_AMIGO, id);
-        values.put(TELEFONE, telefone);
+        values.put(ID, telefone.get_id());
+        values.put(ID_AMIGO, telefone.getIdAmigo());
+        values.put(TELEFONE, telefone.getTelefone());
         return values;
     }
 
-    public static String getTelefone(Cursor cursor){
-        String telefone = cursor.getString(cursor.getColumnIndex(TelefoneContract.TELEFONE));
+    public static Telefone getTelefone(Cursor cursor){
+        Telefone telefone = new Telefone();
+        telefone.set_id(cursor.getLong(cursor.getColumnIndex(TelefoneContract.ID)));
+        telefone.setIdAmigo(cursor.getLong(cursor.getColumnIndex(TelefoneContract.ID_AMIGO)));
+        telefone.setTelefone(cursor.getString(cursor.getColumnIndex(TelefoneContract.TELEFONE)));
         return telefone;
     }
 
-    public static List<String> getAllTel(Cursor cursor){
-        ArrayList<String> telefones = new ArrayList<>();
+    public static List<Telefone> getAllTel(Cursor cursor){
+        ArrayList<Telefone> telefones = new ArrayList<>();
         while(cursor.moveToNext()){
             telefones.add(getTelefone(cursor));
         }
         return telefones;
     }
-
-
 
 }

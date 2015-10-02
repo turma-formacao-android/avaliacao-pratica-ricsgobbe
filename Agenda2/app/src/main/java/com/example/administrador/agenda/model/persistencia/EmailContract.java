@@ -3,6 +3,8 @@ package com.example.administrador.agenda.model.persistencia;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import com.example.administrador.agenda.model.entidade.Email;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,20 +36,24 @@ public class EmailContract {
     }
 
 
-    public static ContentValues contentValues(Long id, String email){
+    public static ContentValues contentValues(Email email){
         ContentValues values = new ContentValues();
-        values.put(ID_AMIGO, id);
-        values.put(EMAIL, email);
+        values.put(ID, email.get_id());
+        values.put(ID_AMIGO, email.getIdAmigo());
+        values.put(EMAIL, email.getEmail());
         return values;
     }
 
-    public static String getEmail(Cursor cursor){
-        String email = cursor.getString(cursor.getColumnIndex(EmailContract.EMAIL));
+    public static Email getEmail(Cursor cursor){
+        Email email = new Email();
+        email.set_id(cursor.getLong(cursor.getColumnIndex(EmailContract.ID)));
+        email.setIdAmigo(cursor.getLong(cursor.getColumnIndex(EmailContract.ID_AMIGO)));
+        email.setEmail(cursor.getString(cursor.getColumnIndex(EmailContract.EMAIL)));
         return email;
     }
 
-    public static List<String> getAllEmail(Cursor cursor){
-        ArrayList<String> emails = new ArrayList<>();
+    public static List<Email> getAllEmail(Cursor cursor){
+        ArrayList<Email> emails = new ArrayList<>();
         while(cursor.moveToNext()){
             emails.add(getEmail(cursor));
         }
