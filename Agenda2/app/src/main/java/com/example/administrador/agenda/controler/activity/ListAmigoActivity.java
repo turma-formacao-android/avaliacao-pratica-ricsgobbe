@@ -23,6 +23,7 @@ import com.example.administrador.agenda.service.EmailBusinessService;
 import com.example.administrador.agenda.service.RedeBusinessService;
 import com.example.administrador.agenda.service.TelefoneBusinessService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,7 +50,6 @@ public class ListAmigoActivity extends AppCompatActivity{
 
     private void updateListAmigo() {
         List<Amigo> values = AmigoBusinessService.findAll();
-        //amigoView.setAdapter(new AmigoAdapter(this, values));
         AmigoAdapter adapter = (AmigoAdapter) amigoView.getAdapter();
         adapter.setItens(values);
         adapter.notifyDataSetChanged();
@@ -57,7 +57,9 @@ public class ListAmigoActivity extends AppCompatActivity{
     }
 
     private void bindListView() {
+            List<Amigo> values = new ArrayList<>();
             amigoView = (ListView) findViewById(R.id.amigoList);
+            amigoView.setAdapter(new AmigoAdapter(this, values));
             registerForContextMenu(amigoView);
             amigoView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
