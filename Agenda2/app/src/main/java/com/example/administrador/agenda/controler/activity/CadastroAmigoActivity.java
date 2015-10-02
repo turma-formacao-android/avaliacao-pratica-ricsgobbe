@@ -1,7 +1,5 @@
 package com.example.administrador.agenda.controler.activity;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,13 +11,11 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.administrador.agenda.R;
-import com.example.administrador.agenda.controler.activity.adapter.EmailAdapter;
-import com.example.administrador.agenda.controler.activity.adapter.RedeAdapter;
-import com.example.administrador.agenda.controler.activity.adapter.TelAdapter;
+import com.example.administrador.agenda.controler.adapter.EmailAdapter;
+import com.example.administrador.agenda.controler.adapter.RedeAdapter;
+import com.example.administrador.agenda.controler.adapter.TelAdapter;
 import com.example.administrador.agenda.model.entidade.Amigo;
 import com.example.administrador.agenda.model.entidade.Email;
 import com.example.administrador.agenda.model.entidade.RedeSocial;

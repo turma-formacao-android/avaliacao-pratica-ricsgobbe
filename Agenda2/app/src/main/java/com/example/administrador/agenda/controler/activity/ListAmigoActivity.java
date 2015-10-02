@@ -16,7 +16,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.administrador.agenda.R;
-import com.example.administrador.agenda.controler.activity.adapter.AmigoAdapter;
+import com.example.administrador.agenda.controler.adapter.AmigoAdapter;
 import com.example.administrador.agenda.model.entidade.Amigo;
 import com.example.administrador.agenda.service.AmigoBusinessService;
 import com.example.administrador.agenda.service.EmailBusinessService;

@@ -1,4 +1,4 @@
-package com.example.administrador.agenda.controler.activity.adapter;
+package com.example.administrador.agenda.controler.adapter;
 
 import android.app.Activity;
 import android.view.View;
