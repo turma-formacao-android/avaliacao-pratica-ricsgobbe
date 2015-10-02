@@ -16,8 +16,12 @@ public class RedeBusinessService {
     public static List<RedeSocial> findAll(){
         return RedeRepository.getAll();
     }
-    public static void getRedeNull(Long id){
-        RedeRepository.getRedeNull(id);
+    public static void  getRedeNull(Long id){
+        List<RedeSocial> redes = RedeRepository.getRedeNull(id);
+        for(RedeSocial r : redes){
+            r.setIdAmigo(id);
+            save(r);
+        }
     }
     public static void save(RedeSocial rede) {
         RedeRepository.save(rede);
@@ -25,5 +29,13 @@ public class RedeBusinessService {
 
     public static void delete(RedeSocial rede){
         RedeRepository.delete(rede.get_id());
+    }
+
+    public static List<RedeSocial> redesAmigo(Long id){
+        return RedeRepository.getRedeAmigo(id);
+    }
+
+    public static void deleteRede(Long id){
+        RedeRepository.deleteRedeContato(id);
     }
 }

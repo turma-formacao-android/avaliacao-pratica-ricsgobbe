@@ -1,6 +1,7 @@
 package com.example.administrador.agenda.service;
 
 import com.example.administrador.agenda.model.entidade.Email;
+import com.example.administrador.agenda.model.persistencia.EmailContract;
 import com.example.administrador.agenda.model.persistencia.EmailRepository;
 
 import java.util.List;
@@ -22,10 +23,22 @@ public class EmailBusinessService {
     }
 
     public static void getEmailNull(Long id){
-        EmailRepository.getEmailNull(id);
+        List<Email> emails =EmailRepository.getEmailNull(id);
+        for(Email e: emails){
+            e.setIdAmigo(id);
+            save(e);
+        }
 
     }
     public static void delete(Email email){
         EmailRepository.delete(email.get_id());
+    }
+
+    public static List<Email> emailsAmigo(Long id){
+        return EmailRepository.getEmailAmigo(id);
+    }
+
+    public static void deleteEmailContato(Long id){
+        EmailRepository.deleteEmailContato(id);
     }
 }

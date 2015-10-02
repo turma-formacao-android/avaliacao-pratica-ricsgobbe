@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 import com.example.administrador.agenda.R;
 import com.example.administrador.agenda.model.entidade.Amigo;
@@ -45,7 +46,11 @@ public class AmigoAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        Amigo amigo = getItem(position);
         View view = context.getLayoutInflater().inflate(R.layout.layout_list_amigo, parent, false);
+
+        TextView nome = (TextView) view.findViewById(R.id.txtViewListAmigoNome);
+        nome.setText(amigo.getNome());
 
         return view;
     }

@@ -1,5 +1,7 @@
 package com.example.administrador.agenda.controler.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -7,9 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrador.agenda.R;
 import com.example.administrador.agenda.controler.activity.adapter.EmailAdapter;
@@ -47,7 +52,9 @@ public class CadastroAmigoActivity extends AppCompatActivity {
     private Spinner spnEmail;
     private Spinner spnTel;
     private Spinner spnRede;
-
+    private Email selectedEmail;
+    private Telefone selectedTelefone;
+    private RedeSocial selectedRede;
 
     public CadastroAmigoActivity() {
     }
@@ -79,12 +86,34 @@ public class CadastroAmigoActivity extends AppCompatActivity {
         List<RedeSocial> redes = new ArrayList<>();
         spnRede = (Spinner) findViewById(R.id.spinnerSociais);
         spnRede.setAdapter(new RedeAdapter(this, redes));
+        spnRede.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedRede = (RedeSocial) parent.getAdapter().getItem(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void bindTelList() {
-        List<Telefone> telefones = TelefoneBusinessService.findAll();
+        List<Telefone> telefones = new ArrayList<>();
         spnTel = (Spinner) findViewById(R.id.spinnerTel);
         spnTel.setAdapter(new TelAdapter(this, telefones));
+        spnTel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedTelefone = (Telefone) parent.getAdapter().getItem(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     @Override
@@ -96,27 +125,38 @@ public class CadastroAmigoActivity extends AppCompatActivity {
     }
 
     private void bindEmailList() {
-        List<Email> emails = EmailBusinessService.findAll();
+        List<Email> emails = new ArrayList<>();
         spnEmail = (Spinner) findViewById(R.id.spinnerEmail);
         spnEmail.setAdapter(new EmailAdapter(this, emails));
+        spnEmail.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedEmail = (Email) parent.getAdapter().getItem(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void updateEmailList() {
-        List<Email> emails = EmailBusinessService.findAll();
+        List<Email> emails = EmailBusinessService.emailsAmigo(amigo.get_id());
         EmailAdapter adapter = (EmailAdapter) spnEmail.getAdapter();
         adapter.setItens(emails);
         adapter.notifyDataSetChanged();
     }
 
     private void updateTelList() {
-        List<Telefone> telefones = TelefoneBusinessService.findAll();
+        List<Telefone> telefones = TelefoneBusinessService.telefonesAmigo(amigo.get_id());
         TelAdapter adapter = (TelAdapter) spnTel.getAdapter();
         adapter.setItens(telefones);
         adapter.notifyDataSetChanged();
     }
 
     private void updateRedeList() {
-        List<RedeSocial> redes = RedeBusinessService.findAll();
+        List<RedeSocial> redes = RedeBusinessService.redesAmigo(amigo.get_id());
         RedeAdapter adapter = (RedeAdapter) spnRede.getAdapter();
         adapter.setItens(redes);
         adapter.notifyDataSetChanged();
@@ -245,8 +285,60 @@ public class CadastroAmigoActivity extends AppCompatActivity {
             case R.id.menu_addAmigo:
                 addAmigo();
                 break;
+            case R.id.menu_editEmail:
+                editEmail();
+                break;
+            case R.id.menu_editRede:
+                editRede();
+                break;
+            case R.id.menu_editTel:
+                editTel();
+                break;
+            case R.id.menu_delEmail:
+                delEmail();
+                break;
+            case R.id.menu_delRede:
+                delRede();
+                break;
+            case R.id.menu_delTel:
+                delTel();
+                break;
+
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void delEmail() {
+        EmailBusinessService.delete(selectedEmail);
+        updateEmailList();
+    }
+
+    private void delRede() {
+        RedeBusinessService.delete(selectedRede);
+        updateRedeList();
+    }
+
+    private void delTel() {
+        TelefoneBusinessService.delete(selectedTelefone);
+        updateTelList();
+    }
+
+    private void editTel() {
+        Intent goToFormTel = new Intent(CadastroAmigoActivity.this, FormTelActivity.class);
+        goToFormTel.putExtra(FormTelActivity.PARAM_TEL, selectedTelefone);
+        startActivity(goToFormTel);
+    }
+
+    private void editRede() {
+        Intent goToFormRede = new Intent(CadastroAmigoActivity.this, FormRedeActivity.class);
+        goToFormRede.putExtra(FormRedeActivity.PARAM_REDE, selectedRede);
+        startActivity(goToFormRede);
+    }
+
+    private void editEmail() {
+        Intent goToFormEmail = new Intent(CadastroAmigoActivity.this, FormEmailActivity.class);
+        goToFormEmail.putExtra(FormEmailActivity.PARAM_EMAIL, selectedEmail);
+        startActivity(goToFormEmail);
     }
 
     private void addAmigo() {

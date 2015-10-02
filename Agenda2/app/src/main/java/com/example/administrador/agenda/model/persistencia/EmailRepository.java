@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.example.administrador.agenda.model.entidade.Email;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,7 +58,7 @@ public class EmailRepository {
         databaseHelper.close();
     }
 
-    public static void getEmailNull(Long idAmigo){
+    public static List<Email> getEmailNull(Long idAmigo){
         DatabaseHelper databaseHelper =DatabaseHelper.getInstance();
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
@@ -65,11 +66,42 @@ public class EmailRepository {
         //String[] params = null;
 
         Cursor cursor = db.query(EmailContract.TABLE, EmailContract.COLUNMS, where, null, null, null, null);
-        Email email = new Email();
-        while(cursor.moveToNext()){
-            email = EmailContract.getEmail(cursor);
-            email.setIdAmigo(idAmigo);
-            save(email);
-        }
+        List<Email> emails = EmailContract.getAllEmail(cursor);
+
+        db.close();
+        databaseHelper.close();
+        return emails;
+    }
+
+
+    public static List<Email> getEmailAmigo(Long idAmigo){
+        DatabaseHelper databaseHelper =DatabaseHelper.getInstance();
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+        String where = EmailContract.ID_AMIGO + " = ? OR "+  EmailContract.ID_AMIGO + " IS NULL";
+        String[] params = {String.valueOf(idAmigo)};
+
+        Cursor cursor = db.query(EmailContract.TABLE, EmailContract.COLUNMS, where, params, null, null, null);
+        List<Email> emails = EmailContract.getAllEmail(cursor);
+
+
+        db.close();
+        databaseHelper.close();
+
+        return emails;
+    }
+
+
+    public static void deleteEmailContato(Long id){
+        DatabaseHelper databaseHelper =DatabaseHelper.getInstance();
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+        String where = EmailContract.ID_AMIGO + " = ? ";
+        String[] params = {String.valueOf(id)};
+
+        db.delete(EmailContract.TABLE, where, params);
+
+        db.close();
+        databaseHelper.close();
     }
 }

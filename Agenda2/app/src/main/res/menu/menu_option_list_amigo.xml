@@ -3,17 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_delete"
-        android:title="Delete"
+        android:id="@+id/menu_addNovoAmigo"
+        android:title="Add"
         app:showAsAction="always"
         android:icon="@mipmap/ic_action_content_add"/>
+
     <item
-        android:id="@+id/menu_update"
-        android:title="Edit"
+        android:id="@+id/menu_filtro"
+        android:title="Filtrar"
         app:showAsAction="always"
-        android:icon="@mipmap/ic_action_action_done"
-        />
-
-
-
+        android:icon="@mipmap/ic_action_content_add"/>
 </menu>

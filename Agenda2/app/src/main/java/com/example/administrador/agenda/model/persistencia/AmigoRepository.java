@@ -38,7 +38,7 @@ public class AmigoRepository {
 
 
         Cursor cursor = db.query(AmigoContract.TABLE, AmigoContract.COLUNMS, null, null, null, null, AmigoContract.ID);
-        List<Amigo> amigos = AmigoContract.getEstoques(cursor);
+        List<Amigo> amigos = AmigoContract.getAmigos(cursor);
         db.close();
         databaseHelper.close();
         return amigos;
@@ -71,5 +71,34 @@ public class AmigoRepository {
         databaseHelper.close();
 
         return amigo.get_id();
+    }
+
+    public static void deleteContatos(Amigo amigo) {
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance();
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+        String where = AmigoContract.ID + " = ? ";
+        String[] params = {String.valueOf(amigo.get_id())};
+        db.delete(AmigoContract.TABLE, where, params);
+
+
+        db.close();
+        databaseHelper.close();
+    }
+
+    public static List<Amigo> selectAmigo(String nome){
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance();
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+        String where = AmigoContract.NOME + " = ? ";
+        String[] params = {String.valueOf(nome)};
+        db.delete(AmigoContract.TABLE, where, params);
+
+        Cursor cursor = db.query(AmigoContract.TABLE, AmigoContract.COLUNMS, where, params, null, null, null);
+        List<Amigo> amigos = AmigoContract.getAmigos(cursor);
+
+        db.close();
+        databaseHelper.close();
+        return amigos;
     }
 }

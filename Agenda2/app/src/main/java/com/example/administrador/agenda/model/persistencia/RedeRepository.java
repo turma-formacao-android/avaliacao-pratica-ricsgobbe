@@ -58,19 +58,55 @@ public class RedeRepository {
         databaseHelper.close();
     }
 
-    public static void getRedeNull(Long idAmigo){
+    public static List<RedeSocial> getRedeNull(Long idAmigo){
         DatabaseHelper databaseHelper =DatabaseHelper.getInstance();
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
-        String where = RedeContract.ID_AMIGO + " IS NULL";
-        //String[] params = null;
+        String where = RedeContract.ID_AMIGO + " IS NULL OR " + RedeContract.ID_AMIGO + " = ?";
+        String[] params = {String.valueOf(idAmigo)};
 
-        Cursor cursor = db.query(RedeContract.TABLE, RedeContract.COLUNMS, where, null, null, null, null);
-        RedeSocial rede = new RedeSocial();
-        while(cursor.moveToNext()){
+        Cursor cursor = db.query(RedeContract.TABLE, RedeContract.COLUNMS, where, params, null, null, null);
+
+        List<RedeSocial> redes = RedeContract.getAllRede(cursor);
+
+       /* while(cursor.moveToNext()){
             rede = RedeContract.getRede(cursor);
             rede.setIdAmigo(idAmigo);
             save(rede);
-        }
+        }*/
+        return redes;
     }
+
+    public static List<RedeSocial> getRedeAmigo(Long idAmigo) {
+        DatabaseHelper databaseHelper =DatabaseHelper.getInstance();
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+        String where = RedeContract.ID_AMIGO + " = ? OR "+  RedeContract.ID_AMIGO + " IS NULL";
+        String[] params = {String.valueOf(idAmigo)};
+
+        Cursor cursor = db.query(RedeContract.TABLE, RedeContract.COLUNMS, where, params, null, null, null);
+        List<RedeSocial> redes = RedeContract.getAllRede(cursor);
+
+
+        db.close();
+        databaseHelper.close();
+
+        return redes;
+    }
+
+
+
+    public static void deleteRedeContato(Long id){
+        DatabaseHelper databaseHelper =DatabaseHelper.getInstance();
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+        String where = RedeContract.ID_AMIGO + " = ? ";
+        String[] params = {String.valueOf(id)};
+
+        db.delete(RedeContract.TABLE, where, params);
+
+        db.close();
+        databaseHelper.close();
+    }
+
 }

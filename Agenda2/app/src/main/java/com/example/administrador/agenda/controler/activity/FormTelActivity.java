@@ -15,7 +15,7 @@ import com.example.administrador.agenda.service.TelefoneBusinessService;
  */
 public class FormTelActivity extends AppCompatActivity {
 
-    private final String PARAM_TEL = "telefone";
+    public static final String PARAM_TEL = "telefone";
     private EditText tel;
     private Telefone telefone;
 

@@ -22,10 +22,22 @@ public class TelefoneBusinessService {
     }
 
     public static void getTelNull(Long id){
-        TelefoneRepository.getTelNull(id);
+        List<Telefone> telefones = TelefoneRepository.getTelNull(id);
+        for(Telefone t : telefones){
+            t.setIdAmigo(id);
+            save(t);
+        }
     }
 
     public static void delete(Telefone telefone){
         TelefoneRepository.delete(telefone.get_id());
+    }
+
+    public static List<Telefone> telefonesAmigo(Long id){
+        return TelefoneRepository.getTelefoneAmigo(id);
+    }
+
+    public static void deleteTelefone(Long id){
+        TelefoneRepository.deleteTelefoneContato(id);
     }
 }

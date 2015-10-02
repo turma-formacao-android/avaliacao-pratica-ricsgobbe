@@ -76,12 +76,12 @@ public class AmigoContract {
     }
 
 
-    public static List<Amigo> getEstoques(Cursor cursor){
-        ArrayList<Amigo> estoques = new ArrayList<>();
+    public static List<Amigo> getAmigos(Cursor cursor){
+        ArrayList<Amigo> amigos = new ArrayList<>();
         while(cursor.moveToNext()){
-            estoques.add(getAmigo(cursor));
+            amigos.add(getAmigo(cursor));
         }
-        return estoques;
+        return amigos;
     }
 
 }

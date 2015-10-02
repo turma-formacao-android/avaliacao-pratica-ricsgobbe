@@ -8,4 +8,31 @@
         app:showAsAction="always"
         android:icon="@mipmap/ic_action_content_add"/>
 
+
+    <item
+        android:id="@+id/menu_editEmail"
+        android:title="Edit Email"
+    />
+    <item
+        android:id="@+id/menu_delEmail"
+        android:title="Delete Email"
+        />
+
+    <item
+        android:id="@+id/menu_editRede"
+        android:title="Edit Rede"
+        />
+    <item
+        android:id="@+id/menu_delRede"
+        android:title="Delete Rede"
+        />
+    <item
+        android:id="@+id/menu_editTel"
+        android:title="Edit Tel"
+        />
+    <item
+        android:id="@+id/menu_delTel"
+        android:title="Delete Tel"
+        />
+
 </menu>

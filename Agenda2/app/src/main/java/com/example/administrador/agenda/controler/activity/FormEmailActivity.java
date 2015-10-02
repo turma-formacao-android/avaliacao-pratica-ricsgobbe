@@ -15,7 +15,7 @@ import com.example.administrador.agenda.service.EmailBusinessService;
  */
 public class FormEmailActivity extends AppCompatActivity {
 
-    public final String PARAM_EMAIL = "email";
+    public static final String PARAM_EMAIL = "email";
     private EditText emailTxt;
     Email email;
 

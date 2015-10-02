@@ -28,4 +28,12 @@ public class AmigoBusinessService {
     public static void delete(Amigo amigo){
         AmigoRepository.delete(amigo.get_id());
     }
+
+    public static void deleteContatos(Amigo amigo){
+        AmigoRepository.deleteContatos(amigo);
+    }
+
+    public static List<Amigo> filtrar(String nome){
+       return AmigoRepository.selectAmigo(nome);
+    }
 }

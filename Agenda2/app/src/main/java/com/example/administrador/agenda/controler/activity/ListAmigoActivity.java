@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -17,6 +19,9 @@ import com.example.administrador.agenda.R;
 import com.example.administrador.agenda.controler.activity.adapter.AmigoAdapter;
 import com.example.administrador.agenda.model.entidade.Amigo;
 import com.example.administrador.agenda.service.AmigoBusinessService;
+import com.example.administrador.agenda.service.EmailBusinessService;
+import com.example.administrador.agenda.service.RedeBusinessService;
+import com.example.administrador.agenda.service.TelefoneBusinessService;
 
 import java.util.List;
 
@@ -44,8 +49,9 @@ public class ListAmigoActivity extends AppCompatActivity{
 
     private void updateListAmigo() {
         List<Amigo> values = AmigoBusinessService.findAll();
-        amigoView.setAdapter(new AmigoAdapter(this, values));
+        //amigoView.setAdapter(new AmigoAdapter(this, values));
         AmigoAdapter adapter = (AmigoAdapter) amigoView.getAdapter();
+        adapter.setItens(values);
         adapter.notifyDataSetChanged();
 
     }
@@ -74,7 +80,7 @@ public class ListAmigoActivity extends AppCompatActivity{
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_add:
+            case R.id.menu_delete:
                 onMenuDeleteClick();
                 break;
             case R.id.menu_update:
@@ -90,7 +96,10 @@ public class ListAmigoActivity extends AppCompatActivity{
                 .setMessage("Delete ? ").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                AmigoBusinessService.delete(selectedAmigo);
+                AmigoBusinessService.deleteContatos(selectedAmigo);
+                TelefoneBusinessService.deleteTelefone(selectedAmigo.get_id());
+                EmailBusinessService.deleteEmailContato(selectedAmigo.get_id());
+                RedeBusinessService.deleteRede(selectedAmigo.get_id());
                 selectedAmigo = null;
                 String message = "Deletado";
                 updateListAmigo();
@@ -106,6 +115,45 @@ public class ListAmigoActivity extends AppCompatActivity{
         Intent goToTaskForm = new Intent(ListAmigoActivity.this, CadastroAmigoActivity.class);
         goToTaskForm.putExtra(CadastroAmigoActivity.PARAM_AMIGO, selectedAmigo);
         startActivity(goToTaskForm);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_option_list_amigo, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.menu_addNovoAmigo:
+                addNovoAmigo();
+                break;
+            case R.id.menu_filtro:
+                filtrar();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void filtrar() {
+        final EditText input = new EditText(ListAmigoActivity.this);
+        new AlertDialog.Builder(ListAmigoActivity.this).setTitle("Filtro").setView(input)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String valor = input.getText().toString();
+                        List<Amigo> amigo = AmigoBusinessService.filtrar(valor);
+                        AmigoAdapter adapter = (AmigoAdapter) amigoView.getAdapter();
+                        adapter.setItens(amigo);
+                        adapter.notifyDataSetChanged();
+                    }
+                }).show();
+    }
+
+    private void addNovoAmigo() {
+        Intent goToCadastroAmigoActivity = new Intent(ListAmigoActivity.this, CadastroAmigoActivity.class);
+        startActivity(goToCadastroAmigoActivity);
     }
 
 }

@@ -14,7 +14,7 @@ import com.example.administrador.agenda.service.RedeBusinessService;
  * Created by Administrador on 02/10/2015.
  */
 public class FormRedeActivity extends AppCompatActivity {
-    public final String PARAM_REDE = "redeSocial";
+    public static final String PARAM_REDE = "redeSocial";
     private EditText redeTxt;
     RedeSocial rede;
 
