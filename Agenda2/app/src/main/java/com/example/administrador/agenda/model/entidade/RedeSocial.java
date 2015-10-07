@@ -84,10 +84,8 @@ public class RedeSocial
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(this._id);
         dest.writeValue(this.idAmigo);
-        dest.writeValue(this.rede);
-
+        dest.writeString(this.rede);
     }
-
 
     protected RedeSocial(Parcel in) {
         this._id = (Long) in.readValue(Long.class.getClassLoader());
@@ -95,8 +93,7 @@ public class RedeSocial
         this.rede = in.readString();
     }
 
-
-    public static final Parcelable.Creator<RedeSocial> CREATOR = new Parcelable.Creator<RedeSocial>() {
+    public static final Creator<RedeSocial> CREATOR = new Creator<RedeSocial>() {
         public RedeSocial createFromParcel(Parcel source) {
             return new RedeSocial(source);
         }

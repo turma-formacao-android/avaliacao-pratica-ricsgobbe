@@ -83,10 +83,8 @@ public class Telefone implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(this._id);
         dest.writeValue(this.idAmigo);
-        dest.writeValue(this.telefone);
-
+        dest.writeString(this.telefone);
     }
-
 
     protected Telefone(Parcel in) {
         this._id = (Long) in.readValue(Long.class.getClassLoader());
@@ -94,7 +92,7 @@ public class Telefone implements Parcelable {
         this.telefone = in.readString();
     }
 
-    public static final Parcelable.Creator<Telefone> CREATOR = new Parcelable.Creator<Telefone>() {
+    public static final Creator<Telefone> CREATOR = new Creator<Telefone>() {
         public Telefone createFromParcel(Parcel source) {
             return new Telefone(source);
         }

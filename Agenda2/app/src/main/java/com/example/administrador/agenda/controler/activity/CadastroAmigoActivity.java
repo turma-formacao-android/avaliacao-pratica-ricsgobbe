@@ -1,9 +1,12 @@
 package com.example.administrador.agenda.controler.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.administrador.agenda.R;
 import com.example.administrador.agenda.controler.adapter.EmailAdapter;
@@ -78,11 +82,26 @@ public class CadastroAmigoActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EmailBusinessService.deleteEmailNull();
+        RedeBusinessService.deleteRedeNull();
+        TelefoneBusinessService.deleteTelNull();
+    }
+
     private void bindRedeList() {
         List<RedeSocial> redes = new ArrayList<>();
         spnRede = (Spinner) findViewById(R.id.spinnerSociais);
         spnRede.setAdapter(new RedeAdapter(this, redes));
-        spnRede.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        registerForContextMenu(spnRede);
+        spnRede.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                return false;
+            }
+        });
+        /*spnRede.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedRede = (RedeSocial) parent.getAdapter().getItem(position);
@@ -90,16 +109,67 @@ public class CadastroAmigoActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
-        });
+        });*/
+    }
+
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        switch(v.getId()){
+            case R.id.spinnerEmail:
+                getMenuInflater().inflate(R.menu.menu_context_email, menu);
+                break;
+            case R.id.spinnerSociais:
+                getMenuInflater().inflate(R.menu.menu_context_rede, menu);
+                break;
+            case R.id.spinnerTel:
+                getMenuInflater().inflate(R.menu.menu_context_tel, menu);
+                break;
+        }
+
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
+
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.contMenuEmailDel:
+                delEmail();
+                break;
+            case R.id.contMenuEmailUpdate:
+                editEmail();
+                break;
+            case R.id.contMenuTelDel:
+                delTel();
+                break;
+            case R.id.contMenuTelUpdate:
+                editTel();
+                break;
+            case R.id.contMenuRedeDel:
+                delRede();
+                break;
+            case R.id.contMenuRedeUpdate:
+                editRede();
+                break;
+
+        }
+        return super.onContextItemSelected(item);
     }
 
     private void bindTelList() {
         List<Telefone> telefones = new ArrayList<>();
         spnTel = (Spinner) findViewById(R.id.spinnerTel);
         spnTel.setAdapter(new TelAdapter(this, telefones));
-        spnTel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        registerForContextMenu(spnTel);
+        spnTel.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                return false;
+            }
+        });
+        /*spnTel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedTelefone = (Telefone) parent.getAdapter().getItem(position);
@@ -109,7 +179,7 @@ public class CadastroAmigoActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
-        });
+        });*/
     }
 
     @Override
@@ -124,7 +194,15 @@ public class CadastroAmigoActivity extends AppCompatActivity {
         List<Email> emails = new ArrayList<>();
         spnEmail = (Spinner) findViewById(R.id.spinnerEmail);
         spnEmail.setAdapter(new EmailAdapter(this, emails));
-        spnEmail.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        registerForContextMenu(spnEmail);
+        spnEmail.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                return false;
+            }
+        });
+
+        /*spnEmail.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedEmail = (Email) parent.getAdapter().getItem(position);
@@ -134,7 +212,7 @@ public class CadastroAmigoActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
-        });
+        });*/
     }
 
     private void updateEmailList() {
@@ -281,24 +359,6 @@ public class CadastroAmigoActivity extends AppCompatActivity {
             case R.id.menu_addAmigo:
                 addAmigo();
                 break;
-            case R.id.menu_editEmail:
-                editEmail();
-                break;
-            case R.id.menu_editRede:
-                editRede();
-                break;
-            case R.id.menu_editTel:
-                editTel();
-                break;
-            case R.id.menu_delEmail:
-                delEmail();
-                break;
-            case R.id.menu_delRede:
-                delRede();
-                break;
-            case R.id.menu_delTel:
-                delTel();
-                break;
 
         }
         return super.onOptionsItemSelected(item);
@@ -320,31 +380,38 @@ public class CadastroAmigoActivity extends AppCompatActivity {
     }
 
     private void editTel() {
+        selectedTelefone = (Telefone) spnTel.getAdapter().getItem(spnTel.getSelectedItemPosition());
         Intent goToFormTel = new Intent(CadastroAmigoActivity.this, FormTelActivity.class);
         goToFormTel.putExtra(FormTelActivity.PARAM_TEL, selectedTelefone);
         startActivity(goToFormTel);
     }
 
     private void editRede() {
+        selectedRede = (RedeSocial) spnRede.getAdapter().getItem(spnRede.getSelectedItemPosition());
         Intent goToFormRede = new Intent(CadastroAmigoActivity.this, FormRedeActivity.class);
         goToFormRede.putExtra(FormRedeActivity.PARAM_REDE, selectedRede);
         startActivity(goToFormRede);
     }
 
     private void editEmail() {
+        selectedEmail = (Email) spnEmail.getAdapter().getItem(spnEmail.getSelectedItemPosition());
         Intent goToFormEmail = new Intent(CadastroAmigoActivity.this, FormEmailActivity.class);
         goToFormEmail.putExtra(FormEmailActivity.PARAM_EMAIL, selectedEmail);
         startActivity(goToFormEmail);
     }
 
     private void addAmigo() {
+        Long id;
         bindAmigo();
         AmigoBusinessService.save(amigo);
-        Long id = AmigoBusinessService.getIdAmigo(amigo.getNome());
+        if(amigo.get_id() == null) {
+            id = AmigoBusinessService.getIdAmigo(amigo.getNome());
+        }else{
+            id = amigo.get_id();
+        }
         EmailBusinessService.getEmailNull(id);
         TelefoneBusinessService.getTelNull(id);
         RedeBusinessService.getRedeNull(id);
-
 
     }
 

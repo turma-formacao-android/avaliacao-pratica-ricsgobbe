@@ -58,7 +58,7 @@ public class EmailRepository {
         databaseHelper.close();
     }
 
-    public static List<Email> getEmailNull(Long idAmigo){
+    public static List<Email> getEmailNull(){
         DatabaseHelper databaseHelper =DatabaseHelper.getInstance();
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
@@ -100,6 +100,17 @@ public class EmailRepository {
         String[] params = {String.valueOf(id)};
 
         db.delete(EmailContract.TABLE, where, params);
+
+        db.close();
+        databaseHelper.close();
+    }
+
+    public static void deleteEmailNull(){
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance();
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+        String where = EmailContract.ID_AMIGO + " IS NULL ";
+        db.delete(EmailContract.TABLE, where, null);
 
         db.close();
         databaseHelper.close();

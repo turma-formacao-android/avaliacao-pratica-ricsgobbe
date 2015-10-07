@@ -90,9 +90,8 @@ public class AmigoRepository {
         DatabaseHelper databaseHelper = DatabaseHelper.getInstance();
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
-        String where = AmigoContract.NOME + " = ? ";
+        String where = AmigoContract.NOME + " LIKE ? ";
         String[] params = {String.valueOf(nome)};
-        db.delete(AmigoContract.TABLE, where, params);
 
         Cursor cursor = db.query(AmigoContract.TABLE, AmigoContract.COLUNMS, where, params, null, null, null);
         List<Amigo> amigos = AmigoContract.getAmigos(cursor);

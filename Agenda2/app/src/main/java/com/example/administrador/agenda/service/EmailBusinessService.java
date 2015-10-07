@@ -19,11 +19,12 @@ public class EmailBusinessService {
     }
 
     public static void save(Email email) {
+
         EmailRepository.save(email);
     }
 
     public static void getEmailNull(Long id){
-        List<Email> emails =EmailRepository.getEmailNull(id);
+        List<Email> emails =EmailRepository.getEmailNull();
         for(Email e: emails){
             e.setIdAmigo(id);
             save(e);
@@ -40,5 +41,9 @@ public class EmailBusinessService {
 
     public static void deleteEmailContato(Long id){
         EmailRepository.deleteEmailContato(id);
+    }
+
+    public static void deleteEmailNull(){
+        EmailRepository.deleteEmailNull();
     }
 }

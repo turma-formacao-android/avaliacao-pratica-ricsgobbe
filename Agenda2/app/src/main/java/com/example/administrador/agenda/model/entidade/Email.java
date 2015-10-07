@@ -71,6 +71,7 @@ public class Email implements Parcelable {
                 '}';
     }
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -80,8 +81,7 @@ public class Email implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(this._id);
         dest.writeValue(this.idAmigo);
-        dest.writeValue(this.email);
-
+        dest.writeString(this.email);
     }
 
     protected Email(Parcel in) {
@@ -90,8 +90,7 @@ public class Email implements Parcelable {
         this.email = in.readString();
     }
 
-
-    public static final Parcelable.Creator<Email> CREATOR = new Parcelable.Creator<Email>() {
+    public static final Creator<Email> CREATOR = new Creator<Email>() {
         public Email createFromParcel(Parcel source) {
             return new Email(source);
         }

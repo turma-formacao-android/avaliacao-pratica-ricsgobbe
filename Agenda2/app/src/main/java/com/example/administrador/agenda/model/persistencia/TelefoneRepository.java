@@ -110,4 +110,15 @@ public class TelefoneRepository {
         db.close();
         databaseHelper.close();
     }
+
+    public static void deleteTelNull(){
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance();
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+        String where = TelefoneContract.ID_AMIGO + " IS NULL ";
+        db.delete(TelefoneContract.TABLE, where, null);
+
+        db.close();
+        databaseHelper.close();
+    }
 }

@@ -29,6 +29,10 @@ public class FormEmailActivity extends AppCompatActivity {
 
     }
 
+
+
+
+
     private void bindEmailTxt() {
         emailTxt = (EditText) findViewById(R.id.editTxtEmail);
         emailTxt.setText(email.getEmail() == null ? "" : email.getEmail() );

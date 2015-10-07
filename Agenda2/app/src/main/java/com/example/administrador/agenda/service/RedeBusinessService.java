@@ -38,4 +38,8 @@ public class RedeBusinessService {
     public static void deleteRede(Long id){
         RedeRepository.deleteRedeContato(id);
     }
+
+    public static void deleteRedeNull(){
+        RedeRepository.deleteRedeNull();
+    }
 }

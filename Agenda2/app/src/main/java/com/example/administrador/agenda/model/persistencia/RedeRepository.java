@@ -109,4 +109,15 @@ public class RedeRepository {
         databaseHelper.close();
     }
 
+    public static void deleteRedeNull(){
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance();
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+        String where = RedeContract.ID_AMIGO + " IS NULL ";
+        db.delete(RedeContract.TABLE, where, null);
+
+        db.close();
+        databaseHelper.close();
+    }
+
 }

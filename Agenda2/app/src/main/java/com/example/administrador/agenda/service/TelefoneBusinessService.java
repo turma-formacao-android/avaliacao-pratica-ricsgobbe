@@ -40,4 +40,8 @@ public class TelefoneBusinessService {
     public static void deleteTelefone(Long id){
         TelefoneRepository.deleteTelefoneContato(id);
     }
+
+    public static void deleteTelNull(){
+        TelefoneRepository.deleteTelNull();
+    }
 }
